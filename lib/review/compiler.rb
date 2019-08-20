@@ -10,6 +10,7 @@ require 'review/extentions'
 require 'review/preprocessor'
 require 'review/exception'
 require 'review/location'
+require 'review/index_builder'
 require 'strscan'
 
 module ReVIEW
@@ -30,6 +31,14 @@ module ReVIEW
       @chapter = chap
       do_compile
       @strategy.result
+    end
+
+    def make_indexes
+      # ignore when IndexBuilder
+      return if @strategy.target_name == 'index'
+
+      # make indexes for the book (not one chapter)
+      @chapter.book.make_indexes
     end
 
     class SyntaxElement
@@ -233,6 +242,7 @@ module ReVIEW
       end
       @command_name_stack = []
 
+      make_indexes
       tagged_section_init
       while f.next?
         case f.peek
