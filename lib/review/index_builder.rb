@@ -38,6 +38,7 @@ require 'tempfile'
 
 module ReVIEW
   class IndexBuilder
+    include TextUtils
     CAPTION_TITLES = %w[note memo tip info warning important caution notice box].freeze
 
     attr_accessor :doc_status
@@ -46,6 +47,14 @@ module ReVIEW
       @strict = strict
       @index_list = []
       builder_init(*args)
+    end
+
+    def pre_paragraph
+      ''
+    end
+
+    def post_paragraph
+      ''
     end
 
     def builder_init(*args)
@@ -105,6 +114,15 @@ module ReVIEW
     private :headline_prefix
 
     def nonum_begin(level, label, caption)
+    end
+
+    def nonum_end(level)
+    end
+
+    def nodisp_begin(level, label, caption)
+    end
+
+    def nodisp_end(level)
     end
 
     def column_begin(_level, label, caption)
@@ -176,9 +194,14 @@ module ReVIEW
       puts %Q(<div class="lead">\n#{blocked_lines.join("\n")}\n</div>)
     end
 
+    alias_method :lead, :read
+
     def list(_lines, id, _caption, _lang = nil)
       item = ReVIEW::Book::ListIndex::Item.new(id, @list_index.size + 1)
       @list_index << item
+    end
+
+    def source(_lines, _caption = nil, _lang = nil)
     end
 
     def listnum(_lines, id, _caption, _lang = nil)
@@ -195,7 +218,7 @@ module ReVIEW
     def cmd(lines, caption = nil)
     end
 
-    def source(lines, caption, lang = nil)
+    def quote(lines)
     end
 
     def image(_lines, id, caption, _metric = nil)
@@ -231,16 +254,25 @@ module ReVIEW
       @indepimage_index << item
     end
 
+    def hr
+    end
+
+    def label(_id)
+    end
+
     def blankline
     end
 
-    def flushright(lines)
+    def flushright(_lines)
+    end
+
+    def olnum(_num)
     end
 
     def pagebreak
     end
 
-    def bpo(lines)
+    def bpo(_lines)
     end
 
     def noindent
@@ -286,8 +318,56 @@ module ReVIEW
       ''
     end
 
-    def inline_bou(str)
+    def inline_i(_str)
+      ''
+    end
+
+    def inline_b(_str)
+      ''
+    end
+
+    def inline_ami(_str)
+      ''
+    end
+
+    def inline_bou(_str)
       str
+    end
+
+    def inline_tti(__str)
+      ''
+    end
+
+    def inline_ttb(_str)
+      ''
+    end
+
+    def inline_dtp(_str)
+      ''
+    end
+
+    def inline_code(_str)
+      ''
+    end
+
+    def inline_idx(_str)
+      ''
+    end
+
+    def inline_hidx(_str)
+      ''
+    end
+
+    def inline_br(_str)
+      ''
+    end
+
+    def inline_m(_str)
+      ''
+    end
+
+    def firstlinenum(_num)
+      ''
     end
 
     def inline_ruby(arg)
@@ -325,6 +405,10 @@ module ReVIEW
       ''
     end
 
+    def inline_bib(_id)
+      ''
+    end
+
     def inline_column(_id)
       ''
     end
@@ -350,6 +434,86 @@ module ReVIEW
     end
 
     def inline_wb(_s)
+      ''
+    end
+
+    def inline_abbr(_str)
+      ''
+    end
+
+    def inline_acronym(_str)
+      ''
+    end
+
+    def inline_cite(_str)
+      ''
+    end
+
+    def inline_dfn(_str)
+      ''
+    end
+
+    def inline_em(_str)
+      ''
+    end
+
+    def inline_kbd(_str)
+      ''
+    end
+
+    def inline_samp(_str)
+      ''
+    end
+
+    def inline_strong(_str)
+      ''
+    end
+
+    def inline_var(_str)
+      ''
+    end
+
+    def inline_big(_str)
+      ''
+    end
+
+    def inline_small(_str)
+      ''
+    end
+
+    def inline_sub(_str)
+      ''
+    end
+
+    def inline_sup(_str)
+      ''
+    end
+
+    def inline_tt(_str)
+      ''
+    end
+
+    def inline_del(_str)
+      ''
+    end
+
+    def inline_ins(_str)
+      ''
+    end
+
+    def inline_u(_str)
+      ''
+    end
+
+    def inline_recipe(_str)
+      ''
+    end
+
+    def inline_icon(_id)
+      ''
+    end
+
+    def inline_uchar(_str)
       ''
     end
 
@@ -411,6 +575,10 @@ module ReVIEW
 
     def inline_embed(_args)
       ''
+    end
+
+    def highlight?
+      false
     end
   end
 end # module ReVIEW
